@@ -4,7 +4,7 @@ from discord.ext import commands
 import random
 import os
 import datetime
-from webserver import keep_alive
+#from webserver import keep_alive
 
 
 description = '''An example bot to showcase the discord.ext.commands extension
@@ -120,8 +120,8 @@ async def sergio(message, description = 'Quantos dias faltam para SERGIO SALES')
     await message.send('ainda faltam {0} dias'.format(oo))
 
 
-keep_alive()
-TOKEN = os.environ['DISCORD_BOT_SECRET']
+#keep_alive()
+TOKEN = 'MTAwMjkzODY1ODQ0NzQyNTYwOA.GGXcbF.uh_ZJ8xD9XeZouXSHZpxfjPjfKBsZay_ChubJA'
 
 
 bot.run(TOKEN)
