@@ -12,20 +12,18 @@ module.
 There are a number of utility commands being showcased here.'''
 
 
-
-
-
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-
 bot = commands.Bot(command_prefix='!', description=description, intents=intents)
-
 client = discord.Client(intents=intents)
+emojiappended = ['😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾']
+
 
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    await bot.change_presence(activity=discord.Game('VSF ADM'))
     print('------')
 
 
@@ -65,18 +63,12 @@ async def joined(ctx, member: discord.Member):
 
 
 @bot.group()
-async def cool(ctx):
-    """Says if a user is cool.
-    In reality this just checks if a subcommand is being invoked.
-    """
-    if ctx.invoked_subcommand is None:
-        await ctx.send(f'No, {ctx.subcommand_passed} is not cool')
+async def cool(ctx, *args):
+  """Says if a user is cool.
+  In reality this just checks if a subcommand is being invoked.
+  """
+  await ctx.send(file=discord.File('foraadm1.mp4'))
 
-
-@cool.command(name='bot')
-async def _bot(ctx):
-    """Is the bot cool?"""
-    await ctx.send('Yes, the bot is cool.')
 
 
 ###################################################################
@@ -84,27 +76,28 @@ async def _bot(ctx):
 @bot.command()
 async def linux(ctx):
     await ctx.send('Usa Linux boyy')
-    await ctx.send(file=discord.File('Tux.svg.png'))
+#    await ctx.send(file=discord.File('Tux.svg.png'))
+    await ctx.send(file=discord.File('fuderadm3.mp4'))
 
 @bot.command()
 async def repete(ctx, *args, content='Repetindo'):
     arguments = ' '.join(args) # .join joins tudo de uma lista, tuple ou dict
 #    print (arguments)
     await ctx.send(f'{arguments}')
+    await ctx.send(file=discord.File('fuderadm2.mp4'))
 #    print(*args)
 #    print(ctx)
-  
+
 @bot.command()
 async def repeat(ctx, times: int, content='Repetindo...'):
     """!repeat (número de vezes a repetir) palavra """
     for i in range(times):
         await ctx.send(content)
-      
+
 
 @bot.command()
-async def sergio(message, description = 'Quantos dias faltam para SERGIO SALES'):
+async def sergio(ctx, description = 'Quantos dias faltam para SERGIO SALES'):
     """Quantos dias faltam para SERGIO SALES"""
-    bday = datetime.datetime.today()
     bdayhj = str(datetime.datetime.today().strftime("%j"))
     if bdayhj == '217':
         sergio = 'HOJE É O ANIVERSÁRIO DO SÉRGIO MITO (ou o dia seguinte)'
@@ -113,11 +106,20 @@ async def sergio(message, description = 'Quantos dias faltam para SERGIO SALES')
         print(sergio)
     else:
         sergio = 'Hoje não é o aniverśario de serginho. '
-        oo= ( (365 - int(bdayhj)) + 217 )
+        faltambday= ( (365 - int(bdayhj)) + 217 )
         print(sergio)
-        print(oo)
-    await message.send(sergio)
-    await message.send('ainda faltam {0} dias'.format(oo))
+        print(faltambday)
+    await ctx.send(sergio)
+    await ctx.send('ainda faltam {0} dias'.format(faltambday))
+
+@bot.command()
+async def enem(ctx):
+  """Quantos dias faltam pro tinhoso dia (motivacional)"""
+  hoje = int(datetime.datetime.today().strftime("%j"))
+  faltamenem = 317 - hoje
+  await ctx.send(f'Faltam {317-hoje} dias pro ENEM {emojiappended[random.randint(1, 116)]}')
+
+
 
 
 #keep_alive()
