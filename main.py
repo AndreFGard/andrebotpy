@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import random
 import os
+import json
 import datetime
 #from webserver import keep_alive
 
@@ -18,7 +19,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', description=description, intents=intents)
 client = discord.Client(intents=intents)
 emojiappended = ['😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾']
-
+indtratadas = open("indtratadas.txt").readlines()
 
 @bot.event
 async def on_ready():
@@ -118,6 +119,11 @@ async def enem(ctx):
   hoje = int(datetime.datetime.today().strftime("%j"))
   faltamenem = 317 - hoje
   await ctx.send(f'Faltam {317-hoje} dias pro ENEM {emojiappended[random.randint(1, 116)]}')
+
+@bot.command()
+async def salve(ctx, *args)
+    tosend = (indtratadas[random.randint(1, 409)])
+    await ctx.send(f'Salve pra {tosend}')
 
 
 
