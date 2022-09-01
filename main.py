@@ -132,7 +132,7 @@ async def salve(ctx, *args):
 TOKEN = 'MTAwMjkzODY1ODQ0NzQyNTYwOA.GGXcbF.uh_ZJ8xD9XeZouXSHZpxfjPjfKBsZay_ChubJA'
 
 
-bot.run(TOKEN)
+#bot.run(TOKEN)
 
 
 
