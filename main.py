@@ -121,7 +121,7 @@ async def enem(ctx):
   await ctx.send(f'Faltam {317-hoje} dias pro ENEM {emojiappended[random.randint(1, 116)]}')
 
 @bot.command()
-async def salve(ctx, *args)
+async def salve(ctx, *args):
     tosend = (indtratadas[random.randint(1, 409)])
     await ctx.send(f'Salve pra {tosend}')
 
