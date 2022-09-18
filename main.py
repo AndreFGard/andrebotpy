@@ -121,7 +121,7 @@ async def pizza(ctx, left: int, right: int, content='Pizzaiando'):
     senus = math.sin(b).real
     comprimento = round(2 * senus * r, 2)
     print(comprimento)
-    await ctx.send(comprimento)
+    await ctx.send(f'Profundidade: {profundidade} \n Comprimento: {comprimento}')
     
 
 @bot.command()
