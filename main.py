@@ -37,7 +37,6 @@ async def add(ctx, left: int, right: int):
     await ctx.send(left + right)
     await ctx.send(ctx)
 
-#!/usr/bin/python3
 
 @bot.command()
 async def roll(ctx, dice: str):
@@ -56,15 +55,6 @@ async def roll(ctx, dice: str):
 async def choose(ctx, *choices: str):
     """Chooses between multiple choices."""
     await ctx.send(random.choice(choices))
-
-
-@bot.command()
-async def pizzahelp(ctx):
-        """Ajuda a entender como cortar a pizza adequadamente"""
-    x ='   ~ ~ X\n ~       ~\n~    y     y\n ~       ~ \n   ~ ~ X\n'
-    await ctx.send(x)
-    await ctx.send('A profundidade (P) é a distância entre a borda da pizza e \n o seu centro. Posicione a régua paralelamente ao eixo y da pizza e\n sobre a sua borda. Depois, aproxime-a em P cm do centro da pizza,\n mantendo-a paralela ao eixo y. O comprimento \nda corda formada deve ser, intuitivamente, igual em módulo ao que foi indicado por andrebot. ')
-    await ctx.send(' Nesse viés, é fulcral que o proprietário do primeiro pedaço, por meio de uma faca (ou um objeto cortante qualquer ), promova um corte entre o centro da circunferência e um dos 2(dois) pontos de sua borda que estão sendo tangenciados pela régua. Além disso, percebe-se que se faz necessário, também, uma segunda intervenção, mas agora cortando do centro ao outro ponto. Somente assim será possível que sejam obtidas fatias de áreas idênticas.')
 
 
 
@@ -110,7 +100,9 @@ async def repeat(ctx, times: int, content='Repetindo...'):
 
 @bot.command()
 async def pizza(ctx, left: int, right: int, content='Pizzaiando'):
-    """!pizzanum numerodefatias raiodapizza"""
+    """!pizzanum numerodefatias raiodapizza
+    use pizzahelp em caso de dúvidas
+    """
     fatias= int(left)
     r = int(right)
 
@@ -121,7 +113,7 @@ async def pizza(ctx, left: int, right: int, content='Pizzaiando'):
     senus = math.sin(b).real
     comprimento = round(2 * senus * r, 2)
     print(comprimento)
-    await ctx.send(f'Profundidade: {profundidade} \n Comprimento: {comprimento}')
+    await ctx.send(comprimento)
     
 
 @bot.command()
