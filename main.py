@@ -3,7 +3,8 @@ import discord
 from discord.ext import commands
 import random
 import math
-import sys
+import requests
+import sys 
 from cmath import cos
 import os
 import json
@@ -11,18 +12,27 @@ import datetime
 #from webserver import keep_alive
 
 
+
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
 There are a number of utility commands being showcased here.'''
-
-
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 bot = commands.Bot(command_prefix='!', description=description, intents=intents)
 client = discord.Client(intents=intents)
+
+#BASE_URL= "https://xinga-me.appspot.com/api"
 emojiappended = ['😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾']
 indtratadas = open("indtratadas.txt").readlines()
+toxingar = open("toxingar.txt").readlines()
+#request_url = f"{BASE_URL}"
+#response= requests.get(request_url)
+
+#if response.status_code == 200:
+#    data = response.json()
+#    #printa um dicionario
+#    xingada = data['xingamento']
 
 @bot.event
 async def on_ready():
@@ -65,7 +75,6 @@ async def joined(ctx, member: discord.Member):
     """Says when a member joined."""
     await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
 
-
 @bot.group()
 async def cool(ctx, *args):
   """Says if a user is cool.
@@ -79,12 +88,20 @@ async def cool(ctx, *args):
 
 @bot.command()
 async def linux(ctx):
+    """ Usa Linux boyy (?)"""
     await ctx.send('Usa Linux boyy')
-#    await ctx.send(file=discord.File('Tux.svg.png'))
+    await ctx.send(file=discord.File('Tux.svg.png'))
 #   await ctx.send(file=discord.File('fuderadm3.mp4'))
 
 @bot.command()
+async def d(ctx):
+    """Peço desculpas pelo meu comportamento uwu"""
+    await ctx.send('Peço desculpas pelo meu comportamento uwu')
+
+
+@bot.command()
 async def repete(ctx, *args, content='Repetindo'):
+    """" !repete palavras a serem repetidas uma vez"""
     arguments = ' '.join(args) # .join joins tudo de uma lista, tuple ou dict
 #    print (arguments)
     await ctx.send(f'{arguments}')
@@ -95,8 +112,16 @@ async def repete(ctx, *args, content='Repetindo'):
 @bot.command()
 async def repeat(ctx, times: int, content='Repetindo...'):
     """!repeat (número de vezes a repetir) palavra """
-    for i in range(times):
-        await ctx.send(content)
+    if times <= 8:
+        for i in range(times):
+            await ctx.send(content)
+    else:
+        await ctx.send(f'Pq vc não fala {content} pro seu birolho {times} vezes?')
+        ofensa = (toxingar[random.randint(1, 70)])
+        await ctx.send(f'Tá querendo me banir do discord seu {ofensa}')
+#        response= requests.get(request_url)
+#         await ctx.send(xingada)
+
 
 @bot.command()
 async def pizza(ctx, left: int, right: int, content='Pizzaiando'):
