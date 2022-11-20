@@ -4,8 +4,10 @@ __pycache__/
 *$py.class
 *ignore
 fly.toml
+fly.toml
 juros.py
 pizza.py
+teste.py
 xingarapi.py
 # C extensions
 *.so
@@ -132,3 +134,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 pizza.py
+fly.toml

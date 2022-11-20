@@ -1,6 +1,6 @@
-# fly.toml file generated for andrebotpythonfly on 2022-09-02T16:55:15-03:00
+# fly.toml file generated for andrebotpythonfly2 on 2022-10-23T17:20:59-03:00
 
-app = "andrebotpythonfly"
+app = "andrebotpythonfly2"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

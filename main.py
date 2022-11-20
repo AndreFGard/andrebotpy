@@ -3,7 +3,6 @@ import discord
 from discord.ext import commands
 import random
 import math
-import requests
 import sys 
 from cmath import cos
 import os
@@ -160,10 +159,12 @@ async def sergio(ctx, description = 'Quantos dias faltam para SERGIO SALES'):
 
 @bot.command()
 async def enem(ctx):
-  """Quantos dias faltam pro tinhoso dia (motivacional)"""
-  hoje = int(datetime.datetime.today().strftime("%j"))
-  faltamenem = 317 - hoje
-  await ctx.send(f'Faltam {317-hoje} dias pro ENEM {emojiappended[random.randint(1, 116)]}')
+    """Quantos dias faltam pro tinhoso dia (motivacional)"""
+    hoje = int(datetime.datetime.today().strftime("%j"))
+    if hoje == 317:
+        await ctx.send(f'Hoje é o dia do enem :) {emojiappended[random.randint(1, 116)]}')
+    else:
+        await ctx.send(f'Faltam {317-hoje} dias pro ENEM {emojiappended[random.randint(1, 116)]}')
 
 @bot.command()
 async def salve(ctx, *args):
