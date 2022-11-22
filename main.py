@@ -1,4 +1,4 @@
-
+#!/usr/bin/python3
 import discord
 from discord.ext import commands
 import random
@@ -25,6 +25,8 @@ client = discord.Client(intents=intents)
 emojiappended = ['😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾']
 indtratadas = open("indtratadas.txt").readlines()
 toxingar = open("toxingar.txt").readlines()
+gabaritoh = open("2021_D1.txt").readlines()
+gabaritoe = open("2021_D2.txt").readlines()
 #request_url = f"{BASE_URL}"
 #response= requests.get(request_url)
 
@@ -93,7 +95,7 @@ async def linux(ctx):
 #   await ctx.send(file=discord.File('fuderadm3.mp4'))
 
 @bot.command()
-async def d(ctx):
+async def desculpa(ctx):
     """Peço desculpas pelo meu comportamento uwu"""
     await ctx.send('Peço desculpas pelo meu comportamento uwu')
 
@@ -124,7 +126,7 @@ async def repeat(ctx, times: int, content='Repetindo...'):
 
 @bot.command()
 async def pizza(ctx, left: int, right: int, content='Pizzaiando'):
-    """!pizzanum numerodefatias raiodapizza
+    """!pizza numerodefatias raiodapizza
     use pizzahelp em caso de dúvidas
     """
     fatias= int(left)
@@ -170,6 +172,43 @@ async def enem(ctx):
 async def salve(ctx, *args):
     tosend = (indtratadas[random.randint(1, 409)])
     await ctx.send(f'Salve pra {tosend}')
+
+@bot.command()
+async def corrige(ctx, left: int,  mid: str, right: int, content="Corrigindo"):
+    """!corrige dia-enem(1 ou 2) cor(az(azul), br(branco) etc) questão"""
+    # arguments = ' '.join(args) # .join joins tudo de uma lista, tuple ou dict
+    # cor = arguments[0]
+    # quest = arguments[2]
+    # quest2 = arguments[3]
+    # questf = ''.join(arguments)
+    print(left,mid,right)
+    if left == 1:
+        if mid == "az":
+            await ctx.send(gabaritoh[right])
+        elif mid == "am":
+            await ctx.send(gabaritoh[right + 91])
+        elif mid == "br":
+            await ctx.send(gabaritoh[right + 182])
+        elif mid == "ro":
+            await ctx.send(gabaritoh[right + 273])
+        else:
+            await ctx.send('sintaxe: !corrige dia-do-enem(1 ou 2) cor-do-caderno(az(de azul), br(de branco), ro(rosa), am(amarelo)) questão')
+    elif left == 2:
+        if mid == "az":
+            await ctx.send(gabaritoe[right])
+        elif mid == "am":
+            await ctx.send(gabaritoe[right + 91])
+        elif mid == "br":
+            await ctx.send(gabaritoe[right + 182])
+        elif mid == "ro":
+            await ctx.send(gabaritoe[right + 273])
+        else:
+            await ctx.send('sintaxe: !corrige dia-do-enem(1 ou 2) cor-do-caderno(az(de azul), br(de branco), ro(rosa), am(amarelo)) questão')
+    else:
+        await ctx.send('sintaxe: !corrige dia-do-enem(1 ou 2) cor-do-caderno(az(de azul), br(de branco), ro(rosa), am(amarelo)) questão')
+        await ctx.send('exemplo: dia 1, prova azul, questão 30: !corrige 1 az 30
+
+
 
 
 
