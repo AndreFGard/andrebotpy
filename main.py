@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 import discord
 from discord.ext import commands
-import random
+from random import randint, choice
 import math
 import sys
+from sys import argv
 from cmath import cos
 import os
 import json
@@ -176,14 +177,14 @@ async def roll(ctx, dice: str):
         await ctx.send("Format has to be in NdN!")
         return
 
-    result = ", ".join(str(random.randint(1, limit)) for r in range(rolls))
+    result = ", ".join(str(randint(1, limit)) for r in range(rolls))
     await ctx.send(result)
 
 
 @bot.command(description="For when you wanna settle the score some other way")
 async def choose(ctx, *choices: str):
     """Chooses between multiple choices."""
-    await ctx.send(random.choice(choices))
+    await ctx.send(choice(choices))
 
 
 @bot.command()
@@ -242,7 +243,7 @@ async def repeat(ctx, times: int, content="Repetindo..."):
             await ctx.send(content)
     else:
         await ctx.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
-        ofensa = toxingar[random.randint(1, 70)]
+        ofensa = toxingar[randint(1, 70)]
         await ctx.send(f"Tá querendo me banir do discord seu {ofensa}")
 
 
@@ -291,18 +292,16 @@ async def enem(ctx):
     """Quantos dias faltam pro tinhoso dia (motivacional)"""
     hoje = int(datetime.datetime.today().strftime("%j"))
     if hoje == 317:
-        await ctx.send(
-            f"Hoje é o dia do enem :) {emojiappended[random.randint(1, 116)]}"
-        )
+        await ctx.send(f"Hoje é o dia do enem :) {emojiappended[randint(1, 116)]}")
     else:
         await ctx.send(
-            f"Faltam {317-hoje} dias pro ENEM {emojiappended[random.randint(1, 116)]}"
+            f"Faltam {317-hoje} dias pro ENEM {emojiappended[randint(1, 116)]}"
         )
 
 
 @bot.command()
 async def salve(ctx, *args):
-    tosend = indtratadas[random.randint(1, 409)]
+    tosend = indtratadas[randint(1, 409)]
     await ctx.send(f"Salve pra {tosend}")
 
 
@@ -346,6 +345,13 @@ async def corrige(ctx, left: int, mid: str, right: int, content="Corrigindo"):
             "sintaxe: !corrige dia-do-enem(1 ou 2) cor-do-caderno(az(de azul), br(de branco), ro(rosa), am(amarelo)) questão"
         )
         await ctx.send("exemplo: dia 1, prova azul, questão 30: !corrige 1 az 30")
+
+
+@bot.command()
+async def nota(ctx, n1: float, n2: float, n3: float):
+    """!nota nota1 nota2 nota3. outputa a nota faltando"""
+    n4 = 7 - (n1 + n2 + n3) / 4
+    await ctx.send(n4 * 4)
 
 
 # keep_alive()
