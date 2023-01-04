@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import discord
 from discord.ext import commands
-from random import randint, choice
+from random import randint, choice, shuffle
 import math
 import sys
 from sys import argv
@@ -350,8 +350,34 @@ async def corrige(ctx, left: int, mid: str, right: int, content="Corrigindo"):
 @bot.command()
 async def nota(ctx, n1: float, n2: float, n3: float):
     """!nota nota1 nota2 nota3. outputa a nota faltando"""
-    n4 = 7 - (n1 + n2 + n3) / 4
-    await ctx.send(n4 * 4)
+    n4 = 28 - n1 - n2 - n3
+    await ctx.send(n4)
+
+
+@bot.command()
+async def sortcamas(ctx, *args):  # sortbeds
+    """Sorteia quem dividirá qual cama com quem, apenas mande os nomes"""
+    Persons = list(args)
+    NumOfPersons = len(Persons)
+    if NumOfPersons == 0:
+        ctx.send(
+            "Não dorme ninguém. Diga os nomes de quem precisa ser organizado na próxima."
+        )
+    shuffle(Persons)
+    # print(f"Persons shuffled: {Persons}\nNumOfPersons{NumOfPersons}")
+    Persons.append("Com seus pensamentos")
+    Pairs = {}
+    i = 0
+
+    while i < NumOfPersons:
+        Pairs[Persons[i]] = Persons[i + 1]
+        i += 2
+    Output = ""
+    i = 1
+    for person, pair in Pairs.items():
+        Output += f"Na cama {i} :   {person} dorme com {pair}\n"
+        i += 1
+    await ctx.send(Output)
 
 
 # keep_alive()
