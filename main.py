@@ -291,7 +291,7 @@ async def sortcamas(ctx, *args):  # sortbeds
 
 
 # keep_alive()
-TOKEN = "MTAwMjkzODY1ODQ0NzQyNTYwOA.GQux99.WetR7J_cpf8Pf2qtiIMYb0o_MPTNg1Z11QMLs0"
+
 try:
     BOT_TOKEN = environ["BOT_TOKEN"]
 except KeyError:
