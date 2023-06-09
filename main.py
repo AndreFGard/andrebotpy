@@ -9,8 +9,7 @@ from cmath import cos
 import os
 import json
 import datetime
-
-# from webserver import keep_alive
+from resources import words5, wordleClass
 
 
 description = """An example bot to showcase the discord.ext.commands extension
@@ -23,124 +22,12 @@ bot = commands.Bot(command_prefix="!", description=description, intents=intents)
 client = discord.Client(intents=intents)
 
 # BASE_URL= "https://xinga-me.appspot.com/api"
-emojiappended = [
-    "😀",
-    " ",
-    "😃",
-    "😄",
-    "😁",
-    "😆",
-    "😅",
-    "😂",
-    "🤣",
-    "🥲",
-    "☺",
-    "️",
-    "😊",
-    "😇",
-    "🙂",
-    "🙃",
-    "😉",
-    "😌",
-    "😍",
-    "🥰",
-    "😘",
-    "😗",
-    "😙",
-    "😚",
-    "😋",
-    "😛",
-    "😝",
-    "😜",
-    "🤪",
-    "🤨",
-    "🧐",
-    "🤓",
-    "😎",
-    "🥸",
-    "🤩",
-    "🥳",
-    "😏",
-    "😒",
-    "😞",
-    "😔",
-    "😟",
-    "😕",
-    "🙁",
-    "☹",
-    "😣",
-    "😖",
-    "😫",
-    "😩",
-    "🥺",
-    "😢",
-    "😭",
-    "😤",
-    "😠",
-    "😡",
-    "🤬",
-    "🤯",
-    "😳",
-    "🥵",
-    "🥶",
-    "😱",
-    "😨",
-    "😰",
-    "😥",
-    "😓",
-    "🤗",
-    "🤔",
-    "🤭",
-    "🤫",
-    "🤥",
-    "😶",
-    "😐",
-    "😑",
-    "😬",
-    "🙄",
-    "😯",
-    "😦",
-    "😧",
-    "😮",
-    "😲",
-    "🥱",
-    "😴",
-    "🤤",
-    "😪",
-    "😵",
-    "🤐",
-    "🥴",
-    "🤢",
-    "🤮",
-    "🤧",
-    "😷",
-    "🤒",
-    "🤕",
-    "🤑",
-    "🤠",
-    "😈",
-    "👿",
-    "👹",
-    "👺",
-    "🤡",
-    "💩",
-    "👻",
-    "💀",
-    "☠",
-    "👽",
-    "👾",
-    "🤖",
-    "🎃",
-    "😺",
-    "😸",
-    "😹",
-    "😻",
-    "😼",
-    "😽",
-    "🙀",
-    "😿",
-    "😾",
-]
+emojiappended = ('😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨',
+                  '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁',
+                  '☹', '😣', '😖', '😫', '😩', '��', '😢', '😭', '😤', '😠', '��', '🤬', '🤯', '😳', '🥵', '��', '😱', '😨', '😰', '😥', '��', '🤗', 
+                  '🤔', '🤭', '🤫', '��', '😶', '😐', '😑', '😬', '��', '😯', '😦', '😧', '😮', '��', '🥱', '😴', '🤤', '😪', '��', '🤐', '🥴', '🤢', '🤮', 
+                  '��', '😷', '🤒', '🤕', '🤑', '��', '😈', '👿', '👹', '👺', '��', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', 
+                  '😽', '🙀', '😿', '😾')
 indtratadas = open("indtratadas.txt").readlines()
 toxingar = open("toxingar.txt").readlines()
 gabaritoh = open("2022_D1.txt").readlines()
@@ -152,6 +39,9 @@ gabaritoe = open("2022_D2.txt").readlines()
 #    data = response.json()
 #    #printa um dicionario
 #    xingada = data['xingamento']
+
+
+wordle5 = wordleClass(5, words5)
 
 
 @bot.event
@@ -272,30 +162,33 @@ async def pizza(ctx, left: int, right: int, content="Pizzaiando"):
 @bot.command()
 async def sergio(ctx, description="Quantos dias faltam para SERGIO SALES"):
     """Quantos dias faltam para SERGIO SALES"""
-    bdayhj = str(datetime.datetime.today().strftime("%j"))
-    if bdayhj == "217":
+    today = str(datetime.datetime.today().strftime("%j"))
+    if today == "217":
         sergio = "HOJE É O ANIVERSÁRIO DO SÉRGIO MITO (ou o dia seguinte)"
-    elif bdayhj == "218":
+    elif today == "218":
         sergio = "HOJE É O ANIVERSÁRIO DO SÉRGIO MITO (ou o dia seguinte)"
         print(sergio)
     else:
         sergio = "Hoje não é o aniverśario de serginho. "
-        faltambday = (365 - int(bdayhj)) + 217
+        if int(today) > 217:
+            daysuntil = 365 - int(today) + 217
+        else:
+            daysuntil = 217 - int(today)
         print(sergio)
-        print(faltambday)
+        print(daysuntil)
     await ctx.send(sergio)
-    await ctx.send("ainda faltam {0} dias".format(faltambday))
+    await ctx.send(f"ainda faltam {daysuntil} dias")
 
 
 @bot.command()
 async def enem(ctx):
     """Quantos dias faltam pro tinhoso dia (motivacional)"""
-    hoje = int(datetime.datetime.today().strftime("%j"))
-    if hoje == 317:
+    today = int(datetime.datetime.today().strftime("%j"))
+    if today == 317:
         await ctx.send(f"Hoje é o dia do enem :) {emojiappended[randint(1, 116)]}")
     else:
         await ctx.send(
-            f"Faltam {317-hoje} dias pro ENEM {emojiappended[randint(1, 116)]}"
+            f"Faltam {317-today} dias pro ENEM {emojiappended[randint(1, 116)]}"
         )
 
 
@@ -354,6 +247,23 @@ async def nota(ctx, n1: float, n2: float, n3: float):
     await ctx.send(n4)
 
 
+@bot.command()
+async def wordle(ctx, wordsize = 5):  
+    if wordsize not in (5,):
+        ctx.send("Só há suporte para 5 letras")
+    await ctx.send(wordle5.update())
+    #async for message in ctx.history(limit=7):
+    #    print(f"{message.author}:  {message.content}")
+
+@bot.command()
+async def wt(ctx, guess="NULL"):
+    """wt(ordle try) guess"""
+    await ctx.send(wordle5.attempt(guess, ctx.message.author))
+    
+
+# 🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉
+#Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ 🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩
+#🅰 🅱 🅲 🅳 🅴 🅵 🅶 🅷 🅸 🅹 🅺 🅻 🅼 🅽 🅾 🅿 🆀 🆁 🆂 🆃 🆄 🆅 🆆 🆇 🆈 🆉 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿
 @bot.command()
 async def sortcamas(ctx, *args):  # sortbeds
     """Sorteia quem dividirá qual cama com quem, apenas mande os nomes"""
