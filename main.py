@@ -6,7 +6,7 @@ import math
 import sys
 from sys import argv
 from cmath import cos
-import os
+from os import environ
 import json
 import datetime
 from resources import words5, wordleClass
@@ -292,6 +292,9 @@ async def sortcamas(ctx, *args):  # sortbeds
 
 # keep_alive()
 TOKEN = "MTAwMjkzODY1ODQ0NzQyNTYwOA.GQux99.WetR7J_cpf8Pf2qtiIMYb0o_MPTNg1Z11QMLs0"
+try:
+    BOT_TOKEN = environ["BOT_TOKEN"]
+except KeyError:
+    print("No BOT_TOKEN env var provided")
 
-
-bot.run(TOKEN)
+bot.run(BOT_TOKEN)
