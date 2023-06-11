@@ -258,8 +258,13 @@ async def wordle(ctx, wordsize = 5):
 @bot.command()
 async def wt(ctx, guess="NULL"):
     """wt(ordle try) guess"""
-    await ctx.send(wordle5.attempt(guess, ctx.message.author))
+    await ctx.send(wordle5.attempt(guess, ctx.message.author.name))
     
+@bot.command()
+async def wordlewinners(ctx):
+    await ctx.send(wordle5.hallOfFame)
+    
+
 
 # 🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉
 #Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ 🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩
@@ -288,6 +293,7 @@ async def sortcamas(ctx, *args):  # sortbeds
         Output += f"Na cama {i} :   {person} dorme com {pair}\n"
         i += 1
     await ctx.send(Output)
+
 
 
 # keep_alive()
