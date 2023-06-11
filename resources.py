@@ -102,7 +102,7 @@ class wordleClass():
             self.response += "\nburro"
 
         if self.guessesCount == self.allowedGuesses:        # if missed the last chance
-            self.response += "\nAndrebot wins"
+            self.response += "\nAndrebot wins\n" + self.word
             username = "Andrebot"
             self.win(username)
 
