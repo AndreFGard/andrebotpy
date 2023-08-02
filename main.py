@@ -10,7 +10,7 @@ from os import environ
 import json
 import datetime
 from resources import words5, wordleClass
-
+from requests import get
 
 description = """An example bot to showcase the discord.ext.commands extension
 module.
@@ -32,16 +32,22 @@ indtratadas = open("indtratadas.txt").readlines()
 toxingar = open("toxingar.txt").readlines()
 gabaritoh = open("2022_D1.txt").readlines()
 gabaritoe = open("2022_D2.txt").readlines()
-# request_url = f"{BASE_URL}"
-# response= requests.get(request_url)
 
-# if response.status_code == 200:
-#    data = response.json()
-#    #printa um dicionario
-#    xingada = data['xingamento']
-
-
-wordle5 = wordleClass(5, words5)
+try:
+    apiKey = environ["apiKey"] 
+    apiHeaders = {'Authorization': apiKey}
+    postUrl = environ["postUrl"]
+    getUrl = environ["getUrl"]
+    testUrl = environ["testUrl"]
+except KeyError:
+    print("check apikey, headers, posturl, geturl and testUrl")
+    sys.exit(1)
+print(f"post url, geturl: {postUrl}, {getUrl}")
+testRequest = get(testUrl, headers=apiHeaders)
+print(testRequest.text + ":" + str(testRequest.status_code))
+if testRequest.status_code != 200:
+    sys.exit(1)
+wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, apiHeaders=apiHeaders)
 
 
 @bot.event
@@ -262,7 +268,7 @@ async def wt(ctx, guess="NULL"):
     
 @bot.command()
 async def wordlewinners(ctx):
-    await ctx.send(wordle5.hallOfFame)
+    await ctx.send(wordle5.winners())
     
 
 
