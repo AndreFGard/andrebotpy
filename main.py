@@ -29,7 +29,8 @@ emojiappended = ('😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '�
                   '��', '😷', '🤒', '🤕', '🤑', '��', '😈', '👿', '👹', '👺', '��', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', 
                   '😽', '🙀', '😿', '😾')
 indtratadas = open("indtratadas.txt").readlines()
-toxingar = open("toxingar.txt").readlines()
+from toxingar import curses
+# curses is a tuple containing small offenses
 gabaritoh = open("2022_D1.txt").readlines()
 gabaritoe = open("2022_D2.txt").readlines()
 
@@ -139,7 +140,7 @@ async def repeat(ctx, times: int, content="Repetindo..."):
             await ctx.send(content)
     else:
         await ctx.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
-        ofensa = toxingar[randint(1, 70)]
+        ofensa = curses[randint(1, 70)]
         await ctx.send(f"Tá querendo me banir do discord seu {ofensa}")
 
 
@@ -264,10 +265,12 @@ async def wordle(ctx, wordsize = 5):
 @bot.command()
 async def wt(ctx, guess="NULL"):
     """wt(ordle try) guess"""
+    response = get(testUrl, headers=apiHeaders)
     await ctx.send(wordle5.attempt(guess, ctx.message.author.name))
     
 @bot.command()
 async def wordlewinners(ctx):
+    response = get(testUrl, headers=apiHeaders)
     await ctx.send(wordle5.winners())
     
 
