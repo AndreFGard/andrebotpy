@@ -39,6 +39,7 @@ try:
     apiHeaders = {'Authorization': apiKey}
     postUrl = environ["postUrl"]
     getUrl = environ["getUrl"]
+    global testUrl
     testUrl = environ["testUrl"]
 except KeyError:
     print("check apikey, headers, posturl, geturl and testUrl")
@@ -48,7 +49,7 @@ testRequest = get(testUrl, headers=apiHeaders)
 print(testRequest.text + ":" + str(testRequest.status_code))
 if testRequest.status_code != 200:
     sys.exit(1)
-wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, apiHeaders=apiHeaders)
+wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders)
 
 
 @bot.event
@@ -265,12 +266,11 @@ async def wordle(ctx, wordsize = 5):
 @bot.command()
 async def wt(ctx, guess="NULL"):
     """wt(ordle try) guess"""
-    response = get(testUrl, headers=apiHeaders)
     await ctx.send(wordle5.attempt(guess, ctx.message.author.name))
     
 @bot.command()
 async def wordlewinners(ctx):
-    response = get(testUrl, headers=apiHeaders)
+    print("message: " + ctx.author.name)
     await ctx.send(wordle5.winners())
     
 
