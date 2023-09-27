@@ -1,3 +1,7 @@
+pyvenv.cfg 
+words5.json
+words-5.txt 
+bin/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
