@@ -1,0 +1,12 @@
+curses=('abraçador de jiromba','abrigador de piroca','adestrador de mambas negras','admirador de trolhas','adorador de linguica','afagador de troncalhos',
+        'afogador de ganso','agasalhador de croquete','alisador de pentelho','alpinista de jeripongas',
+       'amaciador de trogulho','analisador de rola','analista de jiboias','apreciador de jerungos','assadeira de linguica','bajulador de rocamboles',
+       'base de vigota','batedor de punheta terceirizado','cabeceador de umbigos','cagador de esperma','casinha do sr. piromba','centro das atenções em bukakke',
+       'chocador de dildo','chupador de catramalho','contrabandista de vibrador','dançarino de funk','dedilhador de jatumama','deglutidor de jerеbas',
+       'degustador de lingotes','embainhador universal de espadas','empanador de bracciolla','encanador de trogunços','encapador de salsicha',
+       'engatador de ré-no-quibe','engolidor de espadas','engolidor de esperma','enologo de esperma','ensalivador de jurutongas','extrator de porra',
+       'farfulhador de vergalha','frequentador de micareta','furna de robalo','hotel de pênis','jogador de queimada','ladrão de gozada',
+       'lambedor de saco','lustrador de palmito de carne','massageador de jabirongas','melador de cueca','moradia de jiromba','mordedor de fronha',
+       'motorista de pica','ocultador de jiboia','ordenhador de touro','orfanato de jurungo','pão de salsicha','perdedor de pregas','pompoarista anal',
+       'provador de milk-shake de esperma','provador de piroca','receptor de piranjuba','laboreador de chapeletas','sentador de vergalha',
+       'somelier de sémen','sparring de mutombo','sugador de leite','testador de vibrador','tocador de trucumamas','tratador de piroca','usuario de crocs',)
