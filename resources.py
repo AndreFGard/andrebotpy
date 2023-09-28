@@ -64,15 +64,16 @@ class wordleClass():
         else:
             # username, word, attempts, timestamp)
             p = post(self.postUrl, json = {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount, "timestamp": time()}, headers=self.apiHeaders)
-            print(p.request.body)
+
+
             if int(p.status_code) != 200:
                 p = post(self.postUrl, json = {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount, "timestamp": time()}, headers=self.apiHeaders)
                 if int(p.status_code) != 200:
                     returnText = "\nErro, vitoria nao salva"
                 else:
-                    returnText = "\nVitória salva!"
+                    returnText = "\nVitória salva de segunda!"
             else:
-                returnText = "\nVitória salva!"
+                returnText = "\nVitória salva de primeira!"
         
         if username not in self.hallOfFame:
             self.hallOfFame[username] = 0
@@ -84,21 +85,19 @@ class wordleClass():
 
 
     def winners(self):
-        if True:
-            if self.getUrl:
-                # out of date and api mode enabled, so we must get the updated winners list from the api
-                g = get(self.getUrl, headers=self.apiHeaders)
-                #DBGprint(f"g JSON  {g.json()}\n\tvalues: {g.json().values()}\n\thallofame values: {self.hallOfFame.values()}\n\tcode: {g.status_code}\n\ttext: {g.text}")
-                if g.status_code == 200:
-                    self.hallOfFame = dict(sorted(g.json().items(), key=lambda x:x[1], reverse=True))
-                else:
-                    self.winnersOutOfDate = True 
-                    return({"Erro! Último wordlewinners: \n": self.hallOfFame})
+        if self.getUrl:
+            # out of date and api mode enabled, so we must get the updated winners list from the api
+            g = get(self.getUrl, headers=self.apiHeaders)
+            #DBGprint(f"g JSON  {g.json()}\n\tvalues: {g.json().values()}\n\thallofame values: {self.hallOfFame.values()}\n\tcode: {g.status_code}\n\ttext: {g.text}")
+            if g.status_code == 200:
+                self.hallOfFame = dict(sorted(g.json().items(), key=lambda x:x[1], reverse=True))
+                self.winnersOutOfDate = False
             else:
-                # api mode disabled, just sort the hallofFame with the recently added winner
-                self.hallOfFame = sorted(self.hallOfFame.items(), key=lambda x:x[1], reverse=True)
-
-            self.winnersOutOfDate = False
+                self.winnersOutOfDate = True
+                return({"Erro! Último wordlewinners: \n": self.hallOfFame})
+        else:
+            # api mode disabled, just sort the hallofFame with the recently added winner
+            self.hallOfFame = sorted(self.hallOfFame.items(), key=lambda x:x[1], reverse=True)
 
         return self.hallOfFame
 
