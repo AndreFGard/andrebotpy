@@ -55,6 +55,7 @@ class wordleClass():
 
     def win(self, username):
         """Sweet victory"""
+        WAKETHEAPI
         returnText = ""
         if not self.postUrl:
             if username not in self.hallOfFame:
@@ -160,5 +161,13 @@ class wordleClass():
         print(self.response)
         return self.response
     
+    def WAKETHEAPI(self=self):
+        g = get(self.testUrl, headers=self.apiHeaders)
+        if int(g.status_code) != 200:
+            print(f"woke the api: {time()}")
+            g = get(self.testUrl, headers=self.apiHeaders)
+            if int(g.status_code) != 200:
+                print("FAILED TO WAKE THE API")
+
 
 
