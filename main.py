@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import discord
 from discord.ext import commands
-from random import randint, choice, shuffle
+from random import randint, choice, shuffle, sample
 import math
 import sys
 from sys import argv
@@ -274,7 +274,12 @@ async def wordlewinners(ctx):
     await ctx.send(wordle5.winners())
     
 
-
+def getDuplas(*pessoas):
+    people_n = len(pessoas)
+    people_shuffled = sample(pessoas, people_n)
+    for i in range(0, people_n, 2):
+        print(str(people_shuffled[i]),str( people_shuffled[i+1]))
+    
 # 🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉
 #Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ 🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩
 #🅰 🅱 🅲 🅳 🅴 🅵 🅶 🅷 🅸 🅹 🅺 🅻 🅼 🅽 🅾 🅿 🆀 🆁 🆂 🆃 🆄 🆅 🆆 🆇 🆈 🆉 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿
