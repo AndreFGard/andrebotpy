@@ -97,21 +97,13 @@ async def cool(ctx, *args):
     In reality this just checks if a subcommand is being invoked.
     """
 
-
-#  await ctx.send(file=discord.File('foraadm1.mp4'))
-
-
-###################################################################
-
+######################################################
 
 @bot.command()
 async def linux(ctx):
     """Usa Linux boyy (?)"""
     await ctx.send("Usa Linux boyy")
     await ctx.send(file=discord.File("Tux.svg.png"))
-
-
-#   await ctx.send(file=discord.File('fuderadm3.mp4'))
 
 
 @bot.command()
@@ -126,11 +118,6 @@ async def repete(ctx, *args, content="Repetindo"):
     arguments = " ".join(args)  # .join joins tudo de uma lista, tuple ou dict
     #    print (arguments)
     await ctx.send(f"{arguments}")
-
-
-#    await ctx.send(file=discord.File('fuderadm2.mp4'))
-#    print(*args)
-#    print(ctx)
 
 
 @bot.command()
@@ -166,6 +153,14 @@ async def pizza(ctx, left: int, right: int, content="Pizzaiando"):
     print(comprimento)
     await ctx.send(comprimento)
 
+@bot.command()
+async def pizzahelp(ctx):
+    """instrucoes sobre o comando pizza"""
+    saida = "Posicione a régua de forma tangente à borda da pizza. Depois, aproxime o ponto de tangência ao centro\
+        da circunferencia até que o comprimento do segmento da régua que está \"dentro\" da pizza seja igual ao comprimento\
+            fornecido pelo comando pizza. Inicie dois cortes a partir dos 2 pontos onde a borda da régua intercepta a circunferência.\
+                Agora você tem um pedaço que mede exatamente o necessário!"
+    ctx.send(saida)
 
 @bot.command()
 async def sergio(ctx, description="Quantos dias faltam para SERGIO SALES"):
@@ -208,7 +203,7 @@ async def salve(ctx, *args):
 
 @bot.command()
 async def corrige(ctx, left: int, mid: str, right: int, content="Corrigindo"):
-    """!corrige dia-enem(1 ou 2) cor(az(azul), br(branco) etc) questão"""
+    """!corrige o enem 2022: dia-enem(1 ou 2) cor(az(azul), br(branco) etc) questão"""
     # arguments = ' '.join(args) # .join joins tudo de uma lista, tuple ou dict
     # cor = arguments[0]
     # quest = arguments[2]
@@ -274,10 +269,6 @@ async def wordlewinners(ctx):
     await ctx.send(wordle5.winners())
     
 
-
-# 🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉
-#Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ 🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩
-#🅰 🅱 🅲 🅳 🅴 🅵 🅶 🅷 🅸 🅹 🅺 🅻 🅼 🅽 🅾 🅿 🆀 🆁 🆂 🆃 🆄 🆅 🆆 🆇 🆈 🆉 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿
 @bot.command()
 async def sortduplas(ctx, *args):
     """Arranja todos os parametros em duplas"""
