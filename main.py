@@ -279,16 +279,13 @@ async def wordlewinners(ctx):
 #Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ 🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩
 #🅰 🅱 🅲 🅳 🅴 🅵 🅶 🅷 🅸 🅹 🅺 🅻 🅼 🅽 🅾 🅿 🆀 🆁 🆂 🆃 🆄 🆅 🆆 🆇 🆈 🆉 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿
 @bot.command()
-async def sortcamas(ctx, *args):  # sortbeds
-    """Sorteia quem dividirá qual cama com quem, apenas mande os nomes"""
+async def sortduplas(ctx, *args):
+    """Arranja todos os parametros em duplas"""
     Persons = list(args)
     NumOfPersons = len(Persons)
     if NumOfPersons == 0:
-        ctx.send(
-            "Não dorme ninguém. Diga os nomes de quem precisa ser organizado na próxima."
-        )
+        ctx.send("0 duplas")
     shuffle(Persons)
-    # print(f"Persons shuffled: {Persons}\nNumOfPersons{NumOfPersons}")
     Persons.append("Com seus pensamentos")
     Pairs = {}
     i = 0
@@ -299,11 +296,9 @@ async def sortcamas(ctx, *args):  # sortbeds
     Output = ""
     i = 1
     for person, pair in Pairs.items():
-        Output += f"Na cama {i} :   {person} dorme com {pair}\n"
+        Output += f"{i}:   {person} com {pair}\n"
         i += 1
     await ctx.send(Output)
-
-
 
 # keep_alive()
 
