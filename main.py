@@ -21,35 +21,8 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", description=description, intents=intents)
 client = discord.Client(intents=intents)
 
-# BASE_URL= "https://xinga-me.appspot.com/api"
-emojiappended = ('😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨',
-                  '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁',
-                  '☹', '😣', '😖', '😫', '😩', '��', '😢', '😭', '😤', '😠', '��', '🤬', '🤯', '😳', '🥵', '��', '😱', '😨', '😰', '😥', '��', '🤗', 
-                  '🤔', '🤭', '🤫', '��', '😶', '😐', '😑', '😬', '��', '😯', '😦', '😧', '😮', '��', '🥱', '😴', '🤤', '😪', '��', '🤐', '🥴', '🤢', '🤮', 
-                  '��', '😷', '🤒', '🤕', '🤑', '��', '😈', '👿', '👹', '👺', '��', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', 
-                  '😽', '🙀', '😿', '😾')
-indtratadas = open("indtratadas.txt").readlines()
-from toxingar import curses
-# curses is a tuple containing small offenses
-gabaritoh = open("2022_D1.txt").readlines()
-gabaritoe = open("2022_D2.txt").readlines()
-
-try:
-    apiKey = environ["apiKey"] 
-    apiHeaders = {'Authorization': apiKey}
-    postUrl = environ["postUrl"]
-    getUrl = environ["getUrl"]
-    global testUrl
-    testUrl = environ["testUrl"]
-except KeyError:
-    print("check apikey, headers, posturl, geturl and testUrl")
-    sys.exit(1)
-print(f"post url, geturl: {postUrl}, {getUrl}")
-testRequest = get(testUrl, headers=apiHeaders)
-print(testRequest.text + ":" + str(testRequest.status_code))
-if testRequest.status_code != 200:
-    sys.exit(1)
-wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders)
+import Andrebot
+import asyncio
 
 @bot.event
 async def on_ready():
@@ -58,53 +31,8 @@ async def on_ready():
     print("------")
 
 
-# -generated with a  macro #
-#############################################
-import Andrebot
-andrebot = Andrebot.Andrebot(print)
-@bot.command()
-async def add(ctx, *args):return await andrebot.add(ctx, *args)
-@bot.command()
-async def choose(ctx, *args):return await andrebot.choose(ctx, *args)
-@bot.command()
-async def corrige(ctx, *args):return await andrebot.corrige(ctx, *args)
-@bot.command()
-async def desculpa(ctx, *args):return await andrebot.desculpa(ctx, *args)
-@bot.command()
-async def enem(ctx, *args):return await andrebot.enem(ctx, *args)
-@bot.command()
-async def getDuplas(ctx, *args):return await andrebot.getDuplas(ctx, *args)
-@bot.command()
-async def print(ctx, *args):return await andrebot.print(ctx, *args)
-@bot.command()
-async def joined(ctx, *args):return await andrebot.joined(ctx, *args)
-@bot.command()
-async def linux(ctx, *args):return await andrebot.linux(ctx, *args)
-@bot.command()
-async def nota(ctx, *args):return await andrebot.nota(ctx, *args)
-@bot.command()
-async def pizza(ctx, *args):return await andrebot.pizza(ctx, *args)
-@bot.command()
-async def pizzahelp(ctx, *args):return await andrebot.pizzahelp(ctx, *args)
-@bot.command()
-async def repeat(ctx, *args):return await andrebot.repeat(ctx, *args)
-@bot.command()
-async def repete(ctx, *args):return await andrebot.repete(ctx, *args)
-@bot.command()
-async def roll(ctx, *args):return await andrebot.roll(ctx, *args)
-@bot.command()
-async def salve(ctx, *args):return await andrebot.salve(ctx, *args)
-@bot.command()
-async def sergio(ctx, *args):return await andrebot.sergio(ctx, *args)
-@bot.command()
-async def sortduplas(ctx, *args):return await andrebot.sortduplas(ctx, *args)
-@bot.command()
-async def wordle(ctx, *args):return await andrebot.wordle(ctx, *args)
-@bot.command()
-async def wordlewinners(ctx, *args):return await andrebot.wordlewinners(ctx, *args)
-@bot.command()
-async def wt(ctx, *args):return await andrebot.wt(ctx, *args)
-#############################################
+andrebot = Andrebot.Andrebot(bot.command, print)
+asyncio.run(andrebot.create_functions())
 
 
 try:
