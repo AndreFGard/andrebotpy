@@ -7,8 +7,11 @@ from cmath import cos
 from os import environ
 import json
 import datetime
-from resources import words5, wordleClass
+import discord.ext
+import discord.ext.commands
+from resources import words5, wordleClass, Distinction
 from requests import get
+import discord
 
 
 
@@ -32,6 +35,7 @@ class Interface:
 class Andrebot:
     def __init__(self, declarator, interface: Interface):
         self.interface = interface
+        self.distinction = Distinction()
 
         # BASE_URL= "https://xinga-me.appspot.com/api"
         self.emojiappended = ('😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨',
@@ -273,7 +277,8 @@ class Andrebot:
         async def wordlewinners(context):
             print("message: " + context.author.name)
             return await context.send(self.wordle5.winners())
-            
+        
+
         def getDuplas(*pessoas):
             people_n = len(pessoas)
             people_shuffled = sample(pessoas, people_n)
