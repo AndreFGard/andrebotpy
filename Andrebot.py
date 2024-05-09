@@ -311,3 +311,17 @@ class Andrebot:
                 i += 1
             return await context.send(Output)
 
+        @self.dec()
+        async def gender(context: discord.ext.commands.Context, sender_name=""):
+            target_name = sender_name
+            if not sender_name:
+                sender_name = context.author.name
+                target_name = "você"
+
+            gender = self.distinction.find_gender(sender_name.upper())
+            if gender == "F":
+                return await context.send(f"Eu acho que {target_name} é mulher")
+            elif gender == "M":
+                return await context.send(f"Eu acho que {target_name} é homem")
+            else:
+                return await context.send(f"Eu acho que {target_name} é {gender}")
