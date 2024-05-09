@@ -40,7 +40,7 @@ class Andrebot:
                         '🤔', '🤭', '🤫', '��', '😶', '😐', '😑', '😬', '��', '😯', '😦', '😧', '😮', '��', '🥱', '😴', '🤤', '😪', '��', '🤐', '🥴', '🤢', '🤮', 
                         '��', '😷', '🤒', '🤕', '🤑', '��', '😈', '👿', '👹', '👺', '��', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', 
                         '😽', '🙀', '😿', '😾')
-        self.indtratadas = open("indtratadas.txt").readlines()
+        self.funny_cities = open("funny_cities.txt").readlines()
         from toxingar import curses
         self.curses = curses
         # curses is a tuple containing small offenses
@@ -57,11 +57,13 @@ class Andrebot:
         except KeyError:
             print("check apikey, headers, posturl, geturl and testUrl")
             sys.exit(1)
+
         print(f"post url, geturl: {postUrl}, {getUrl}")
         testRequest = get(testUrl, headers=apiHeaders)
         print(testRequest.text + ":" + str(testRequest.status_code))
         if testRequest.status_code != 200:
             sys.exit(1)
+            
         self.wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders)
 
         self.dec = declarator
