@@ -63,7 +63,7 @@ class Andrebot:
         print(testRequest.text + ":" + str(testRequest.status_code))
         if testRequest.status_code != 200:
             sys.exit(1)
-            
+
         self.wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders)
 
         self.dec = declarator
@@ -107,8 +107,8 @@ class Andrebot:
         @self.dec()
         async def linux(context):
             """Usa Linux boyy (?)"""
-            return await context.send("Usa Linux boyy")
-            return await context.send(file=discord.File("Tux.svg.png"))
+            await context.send("Usa Linux boyy")
+            return await context.send(file=self.interface.File("Tux.svg.png"))
 
 
         @self.dec()
@@ -132,7 +132,7 @@ class Andrebot:
                 for i in range(times):
                     return await context.send(content)
             else:
-                return await context.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
+                await context.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
                 ofensa = self.curses[randint(1, 70)]
                 return await context.send(f"Tá querendo me banir do discord seu {ofensa}")
 
@@ -184,7 +184,7 @@ class Andrebot:
                     daysuntil = 217 - int(today)
                 print(sergio)
                 print(daysuntil)
-            return await context.send(sergio)
+            await context.send(sergio)
             return await context.send(f"ainda faltam {daysuntil} dias")
 
 
