@@ -122,23 +122,36 @@ class Andrebot:
 
 
         @self.dec()
-        async def repete(context, *args, content="Repetindo"):
+        async def repete(context, *args: list[str], content="Repetindo"):
             """ " !repete palavras a serem repetidas uma vez"""
-            arguments = " ".join(args)  # .join joins tudo de uma lista, tuple ou dict
-            #    print (arguments)
-            return await context.send(f"{arguments}")
 
+            maybeTimes = "".join(args[0])
+            times = 1
+            if (maybeTimes.isnumeric()):
+                times = maybeTimes
+                args = args[1:]
+
+            arguments = " ".join(map(lambda l: "".join(l), args))  # .join joins tudo de uma lista, tuple ou dict
+            
+            if times <= 8:
+                return await context.send((f"{arguments}\n" * int(times)))
+            else:
+                await context.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
+                return await context.send(f"Tá querendo me banir do discord seu {get_ofense}")
+            
+
+        def get_ofense():
+            return choice(self.curses)
 
         @self.dec()
         async def repeat(context, times: int, content="Repetindo..."):
             """!repeat (número de vezes a repetir) palavra"""
             if times <= 8:
                 for i in range(times):
-                    return await context.send(content)
+                    await context.send(content)
             else:
                 await context.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
-                ofensa = self.curses[randint(1, 70)]
-                return await context.send(f"Tá querendo me banir do discord seu {ofensa}")
+                return await context.send(f"Tá querendo me banir do discord seu {get_ofense}")
 
 
         #        response= requests.get(request_url)
