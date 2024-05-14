@@ -38,6 +38,7 @@ class Distinction:
 
     @lru_cache(maxsize=100)
     def find_gender(self, name:str):
+        """returns F or M or ?"""
         name = name.upper()
         
         gender = self.find_group(name)

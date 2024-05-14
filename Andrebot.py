@@ -120,28 +120,29 @@ class Andrebot:
             """Peço desculpas pelo meu comportamento uwu"""
             return await context.send("Peço desculpas pelo meu comportamento uwu")
 
+        def get_ofense():
+            return choice(self.curses)
+        
 
         @self.dec()
         async def repete(context, *args: list[str], content="Repetindo"):
             """ " !repete palavras a serem repetidas uma vez"""
 
-            maybeTimes = "".join(args[0])
             times = 1
+
+            maybeTimes = "".join(args[0])
             if (maybeTimes.isnumeric()):
-                times = maybeTimes
+                times = int(maybeTimes)
                 args = args[1:]
 
             arguments = " ".join(map(lambda l: "".join(l), args))  # .join joins tudo de uma lista, tuple ou dict
-            
+
             if times <= 8:
-                return await context.send((f"{arguments}\n" * int(times)))
+                return await context.send((f"{arguments}\n" * times))
             else:
                 await context.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
-                return await context.send(f"Tá querendo me banir do discord seu {get_ofense}")
+                return await context.send(f"Tá querendo me banir do discord seu {get_ofense()}")
             
-
-        def get_ofense():
-            return choice(self.curses)
 
         @self.dec()
         async def repeat(context, times: int, content="Repetindo..."):
@@ -293,36 +294,63 @@ class Andrebot:
         
 
         def getDuplas(*pessoas):
+            """pessoas's len must be even"""
             people_n = len(pessoas)
             people_shuffled = sample(pessoas, people_n)
-            for i in range(0, people_n, 2):
+            for i in range(0, people_n//2, 2):
                 print(str(people_shuffled[i]),str( people_shuffled[i+1]))
             
         # 🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉
         #Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ 🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩
         #🅰 🅱 🅲 🅳 🅴 🅵 🅶 🅷 🅸 🅹 🅺 🅻 🅼 🅽 🅾 🅿 🆀 🆁 🆂 🆃 🆄 🆅 🆆 🆇 🆈 🆉 🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿
-        
-        @self.dec()
-        async def sortduplas(context, *args):
-            """Arranja todos os parametros em duplas"""
-            Persons = list(args)
-            NumOfPersons = len(Persons)
-            if NumOfPersons == 0:
-                context.send("0 duplas")
-            shuffle(Persons)
-            Persons.append("Com seus pensamentos")
+
+
+        def arrange_groups(persons):
+            """returns groups (keys are one and values another) as string and as dict. persons's len must be even."""
+            NumOfpersons = len(persons)
+            persons.append("Com seus pensamentos")
             Pairs = {}
             i = 0
 
-            while i < NumOfPersons:
-                Pairs[Persons[i]] = Persons[i + 1]
+            while i < NumOfpersons:
+                Pairs[persons[i]] = persons[i + 1]
                 i += 2
             Output = ""
             i = 1
             for person, pair in Pairs.items():
-                Output += f"{i}:   {person} com {pair}\n"
+                Output += f"{i}:   {person} - {pair}\n"
                 i += 1
-            return await context.send(Output)
+            return Output, Pairs    
+
+
+        @self.dec()
+        async def sortduplas(context, *args):
+            """Arranja todos os parametros em duplas, pares e grupos"""
+            persons = list(args)
+            NumOfpersons = len(persons)
+            if NumOfpersons == 0:
+                return await context.send("0 duplas")
+            shuffle(persons)
+
+            pairs,x = arrange_groups(persons)
+            await context.send(pairs)
+
+        @self.dec()
+        async def sortgenderedgroups(context, *args):
+            """Tries to arrange groups of people with the same gender, or pairs with opposite genders."""
+            persons = list(args)
+            NumOfpersons = len(persons)
+            if NumOfpersons == 0:
+                return await context.send("0 duplas")
+            
+            #arrange persons by gender
+            shuffle(persons)
+            persons = sorted(persons, key=lambda p: self.distinction.find_gender(p), reverse=True)
+
+            persons.append("com seus pensamentos")
+            pairs = "\n".join([(f"{persons[i]} | {persons[NumOfpersons//2 + i]}") for i in range(0, NumOfpersons//2) ])
+            await context.send(pairs)
+
 
         @self.dec()
         async def gender(context: discord.ext.commands.Context, sender_name=""):
