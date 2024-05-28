@@ -10,6 +10,7 @@ import datetime
 import discord.ext
 import discord.ext.commands
 from resources import words5, wordleClass, Distinction
+import resources
 from requests import get
 import discord
 
@@ -44,7 +45,7 @@ class Andrebot:
                         '🤔', '🤭', '🤫', '��', '😶', '😐', '😑', '😬', '��', '😯', '😦', '😧', '😮', '��', '🥱', '😴', '🤤', '😪', '��', '🤐', '🥴', '🤢', '🤮', 
                         '��', '😷', '🤒', '🤕', '🤑', '��', '😈', '👿', '👹', '👺', '��', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', 
                         '😽', '🙀', '😿', '😾')
-        self.funny_cities = open("funny_cities.txt").readlines()
+        self.funny_cities = resources.funny_cities
         from toxingar import curses
         self.curses = curses
         # curses is a tuple containing small offenses
@@ -220,7 +221,8 @@ class Andrebot:
 
         @self.dec()
         async def salve(context, *args):
-            tosend = self.emojiappended[randint(1, 409)]
+            tosend = choice(self.funny_cities)
+            #tosend += " " + self.emojiappended[randint(1, len(self.emojiappended))]
             return await context.send(f"Salve pra {tosend}")
 
 
