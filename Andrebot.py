@@ -106,7 +106,7 @@ class Andrebot:
             if n.isnumeric():
                 n = int(n)
                 choices = random.sample(options, n)
-                context.send(f"escolhi: {", ".join(choices)}")
+                context.send(f"escolhi: {', '.join(choices)}")
             else:
                 context.send("sintaxe: quantidade_de_escolhas opcao1 opcao2 opcao2\n")
 
