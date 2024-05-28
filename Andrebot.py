@@ -101,10 +101,11 @@ class Andrebot:
         async def pick(context, *message:str):
             """tomar uma amostra ou pick n items from the provided items.\n!pick n item1 item2 item3"""
             n = message
-            options = n[1:]
+            options = list(n[1:])
             n = n[0]
             if n.isnumeric():
                 n = int(n)
+                random.shuffle(options)
                 choices = random.sample(options, n)
                 return await context.send(f"escolhi: {', '.join(choices)}")
             else:
