@@ -13,7 +13,7 @@ from resources import words5, wordleClass, Distinction
 import resources
 from requests import get
 import discord
-
+import random
 
 
 class andrebot_message:
@@ -96,6 +96,20 @@ class Andrebot:
         async def choose(context, *choices: str):
             """Chooses between multiple choices."""
             return await context.send(choice(choices))
+        
+        @self.dec()
+        async def pick(context, message:str):
+            """tomar uma amostra ou pick n items from the provided items.\n!pick n item1 item2 item3"""
+            n = message.split(' ')
+            options = n[1:]
+            n = n[0]
+            if n.isnumeric():
+                n = int(n)
+                choices = random.sample(options, n)
+                context.send(f"escolhi: {", ".join(choices)}")
+            else:
+                context.send("sintaxe: quantidade_de_escolhas opcao1 opcao2 opcao2\n")
+
             
 
 
