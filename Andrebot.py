@@ -98,17 +98,18 @@ class Andrebot:
             return await context.send(choice(choices))
         
         @self.dec()
-        async def pick(context, message:str):
+        async def pick(context, *message:str):
             """tomar uma amostra ou pick n items from the provided items.\n!pick n item1 item2 item3"""
-            n = message.split(' ')
+            n = message
             options = n[1:]
             n = n[0]
             if n.isnumeric():
                 n = int(n)
                 choices = random.sample(options, n)
-                context.send(f"escolhi: {', '.join(choices)}")
+                return await context.send(f"escolhi: {', '.join(choices)}")
             else:
                 context.send("sintaxe: quantidade_de_escolhas opcao1 opcao2 opcao2\n")
+            
 
             
 
