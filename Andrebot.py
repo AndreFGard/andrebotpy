@@ -38,7 +38,7 @@ class Discord_Interface:
             async def f2(ctx, *args):
                 if not args: args = []
 
-                args = type_cast_args(args)
+                #args = type_cast_args(args)
                 return await f(ctx, *args)
         return decor
 
@@ -148,7 +148,9 @@ class Andrebot:
 
             times = 1
 
-            maybeTimes = "".join(args[0])
+            #im not sure about what this does
+            #maybeTimes = "".join(args[0]) if args[0]
+            maybeTimes = args[0]
             if (maybeTimes.isnumeric()):
                 times = int(maybeTimes)
                 args = args[1:]
@@ -159,7 +161,8 @@ class Andrebot:
                 return await context.send((f"{arguments}\n" * times))
             else:
                 await context.send(f"Pq vc não fala {content} pro seu birolho {times} vezes?")
-                return await context.send(f"Tá querendo me banir do discord seu {get_ofense()}")
+                t = f"Tá querendo me banir do discord seu {get_ofense()}"
+                await context.send(t)
             
 
         @self.dec()
