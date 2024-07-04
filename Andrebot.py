@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from random import randint, choice, shuffle, sample
+import random
 import math
 import sys
 from sys import argv
@@ -20,21 +21,34 @@ class andrebot_message:
         self.data = data
 
 class Interface:
-    def __init__(self):
-        ...
-    def build_message(message):
-        ...
-    def command(fun):
-        #changeme
-        def new_fun(*args, **kwargs):
-            return fun
-        return new_fun
+    def __init__(self, api):
+      ...
+
+class Discord_Interface:
+    """this interface converts whatever api is being used to an api that provides for each function
+    a context argument, through which it's possible to obtain any informations relative to the context
+    of the message, as well as answer any incoming messages"""
+    def __init__(self, decorator):
+        self.decorator = decorator
+
+    def interface_middleware_decorator(self):
+        def decor(f):
+            print("im running")
+            @self.decorator(name=f.__name__)
+            async def f2(ctx, *args):
+                if not args: args = []
+
+                args = type_cast_args(args)
+                return await f(ctx, *args)
+        return decor
 
 
+
+def type_cast_args(args:list[str]) -> None:
+    return [(int(el) if el.isdecimal() else el)  for el in args]
 
 class Andrebot:
-    def __init__(self, declarator, interface: Interface):
-        self.interface = interface
+    def __init__(self, declarator, interface: Discord_Interface=Discord_Interface):
         self.distinction = Distinction()
 
         # BASE_URL= "https://xinga-me.appspot.com/api"
@@ -70,7 +84,9 @@ class Andrebot:
 
         self.wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders)
 
-        self.dec = declarator
+        interface = interface(declarator)
+        self.declarator = declarator
+        self.dec = interface.interface_middleware_decorator
 
     async def create_functions(self):
         @self.dec()

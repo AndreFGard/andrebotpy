@@ -31,7 +31,7 @@ async def on_ready():
     print("------")
 
 
-andrebot = Andrebot.Andrebot(bot.command, discord)
+andrebot = Andrebot.Andrebot(bot.command)
 asyncio.run(andrebot.create_functions())
 
 
