@@ -48,7 +48,7 @@ def type_cast_args(args:list[str]) -> None:
     return [(int(el) if el.isdecimal() else el)  for el in args]
 
 class Andrebot:
-    def __init__(self, declarator, interface: Discord_Interface=Discord_Interface):
+    def __init__(self, declarator, interface: Discord_Interface=Discord_Interface, filesPath="./"):
         self.distinction = Distinction()
 
         # BASE_URL= "https://xinga-me.appspot.com/api"
@@ -58,12 +58,14 @@ class Andrebot:
                         '🤔', '🤭', '🤫', '��', '😶', '😐', '😑', '😬', '��', '😯', '😦', '😧', '😮', '��', '🥱', '😴', '🤤', '😪', '��', '🤐', '🥴', '🤢', '🤮', 
                         '��', '😷', '🤒', '🤕', '🤑', '��', '😈', '👿', '👹', '👺', '��', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', 
                         '😽', '🙀', '😿', '😾')
-        self.funny_cities = open("funny_cities.txt").readlines()
+        
+        self.filesPath = filesPath
+        self.funny_cities = open(self.filesPath+"funny_cities.txt").readlines()
         from toxingar import curses
         self.curses = curses
         # curses is a tuple containing small offenses
-        self.gabaritoh = open("2022_D1.txt").readlines()
-        self.gabaritoe = open("2022_D2.txt").readlines()
+        self.gabaritoh = open(self.filesPath+"2022_D1.txt").readlines()
+        self.gabaritoe = open(self.filesPath+"2022_D2.txt").readlines()
 
         try:
             apiKey = environ["apiKey"] 
