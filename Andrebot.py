@@ -220,8 +220,8 @@ class Andrebot:
 
         @self.dec()
         async def salve(context, *args):
-            tosend = self.emojiappended[randint(1, 409)]
-            return await context.send(f"Salve pra {tosend}")
+            tosend = random.choice(self.emojiappended)
+            return await context.send(f"Salve pra {random.choice(self.funny_cities)}{tosend}")
 
 
         @self.dec()
