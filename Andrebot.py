@@ -31,7 +31,7 @@ class Discord_Interface:
     def __init__(self, decorator):
         self.decorator = decorator
 
-    def interface_middleware_decorator(self):
+    def interface_middleware_decorator(self, extra_commands=[]):
         def decor(f):
             print("im running")
             @self.decorator(name=f.__name__)
@@ -94,7 +94,7 @@ class Andrebot:
         @self.dec()
         async def add(context, left: int, right: int):
             """Adds two numbers together."""
-            return await context.send(left + right)
+            return await context.send(sum(map(int, (left, right,))))
 
 
         @self.dec()
