@@ -194,11 +194,11 @@ class wordleClass():
         for i, statuscode in enumerate(self.status):
             if statuscode == 12:
                 # append filled letter emoji. ord() returns the ascii. 97 = 'a'.
-                self.response += self.correct[ord(guess[i]) - 97]
+                self.response += self.correct[ord(guess[i]) - 97] + " "
             elif statuscode == 11:
-                self.response += self.close[ord(guess[i]) - 97]
+                self.response += self.close[ord(guess[i]) - 97] + " "
             else:
-                self.response += "▯"
+                self.response += "_" + " "
 
         if sum(self.status) == 10 * self.wordsize:        # if missed every word
             self.response += "\nburro"
