@@ -10,7 +10,8 @@ import json
 import datetime
 import discord.ext
 import discord.ext.commands
-from resources import words5, wordleClass, Distinction
+from resources import words5, wordleClass, Distinction,isocode_to_gentile
+from resources import detect as lang_detection
 from requests import get
 import discord
 
@@ -313,7 +314,11 @@ class Andrebot:
             print("message: " + context.author.name)
             return await context.send(self.wordle5.winners())
         
-
+        @self.dec()
+        async def lang(ctx, *args):
+            dlang = lang_detection(" ".join(map(str, args)))
+            return await ctx.send(f"This is how you would look like if you were {isocode_to_gentile[dlang]} or {random.choice(self.funny_cities).replace(" ", "-")[:-1]}-ese")
+        
         def getDuplas(*pessoas):
             """pessoas's len must be even"""
             people_n = len(pessoas)
