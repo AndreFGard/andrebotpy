@@ -317,7 +317,7 @@ class Andrebot:
         @self.dec()
         async def lang(ctx, *args):
             dlang = lang_detection(" ".join(map(str, args)))
-            return await ctx.send(f"This is how you would look like if you were {isocode_to_gentile[dlang]} or {random.choice(self.funny_cities).replace(" ", "-")[:-1]}-ese")
+            return await ctx.send(f"This is how you would look like if you were {isocode_to_gentile[dlang]} or {random.choice(self.funny_cities).replace(' ', '-')[:-1]}-ese")
         
         def getDuplas(*pessoas):
             """pessoas's len must be even"""
