@@ -49,7 +49,7 @@ def type_cast_args(args:list[str]) -> None:
     return [(int(el) if el.isdecimal() else el)  for el in args]
 
 class Andrebot:
-    def __init__(self, declarator, interface: Discord_Interface=Discord_Interface, filesPath="./"):
+    def __init__(self, declarator, interface: Discord_Interface=Discord_Interface, filesPath="./", platform='dsc'):
         self.distinction = Distinction()
 
         # BASE_URL= "https://xinga-me.appspot.com/api"
@@ -70,7 +70,7 @@ class Andrebot:
 
         try:
             apiKey = environ["apiKey"] 
-            apiHeaders = {'Authorization': apiKey}
+            apiHeaders = {'password': apiKey, 'platform': platform}
             postUrl = environ["postUrl"]
             getUrl = environ["getUrl"]
             global testUrl
@@ -85,7 +85,7 @@ class Andrebot:
         if testRequest.status_code != 200:
             sys.exit(1)
 
-        self.wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders)
+        self.wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders, platform=platform)
 
         interface = interface(declarator)
         self.declarator = declarator
@@ -317,7 +317,7 @@ class Andrebot:
         @self.dec()
         async def lang(ctx, *args):
             dlang = lang_detection(" ".join(map(str, args)))
-            return await ctx.send(f"This is how you would look like if you were {isocode_to_gentile[dlang]} or {random.choice(self.funny_cities).replace(' ', '-')[:-1]}-ese")
+            return await ctx.send(f"This is how you would look like if you were {isocode_to_gentile[dlang]} or {random.choice(self.funny_cities).replace(' ', '-')[:-1]}ese")
         
         def getDuplas(*pessoas):
             """pessoas's len must be even"""

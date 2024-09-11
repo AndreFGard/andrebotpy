@@ -57,12 +57,14 @@ class gameState:
         
     
 class wordleClass():
-    def __init__(self, wordSize: int, wordList: tuple, postUrl=None, getUrl=None, apiHeaders=None, testUrl=None):
+    def __init__(self, wordSize: int, wordList: tuple, postUrl=None, getUrl=None, apiHeaders=None, testUrl=None, platform='dsc'):
         """Return wordleClass instance for given wordsize and wordList"""
         self.wordsize = wordSize
         self.word = "linúx"             # linux
         self.wordList = wordList
         self.wordNoAccent = "linux"
+
+        self.platform = platform
 
         self.testUrl = testUrl
         self.postUrl = postUrl
@@ -113,11 +115,19 @@ class wordleClass():
             print(self.hallOfFame.items())
         else:
             # username, word, attempts, timestamp)
-            p = post(self.postUrl, json = {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount, "timestamp": time()}, headers=self.apiHeaders)
+            p = post(self.postUrl, json = {
+                'winners':[
+                    {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount,
+                      'loser_username': 'Andrebot', 'platform': self.platform}]}, 
+                      headers=self.apiHeaders)
 
 
             if int(p.status_code) != 200:
-                p = post(self.postUrl, json = {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount, "timestamp": time()}, headers=self.apiHeaders)
+                p = post(self.postUrl, json = {
+                    'winners':[
+                        {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount,
+                        'loser_username': 'Andrebot', 'platform': self.platform}]}, 
+                        headers=self.apiHeaders)
                 if int(p.status_code) != 200:
                     returnText = "\nErro, vitoria nao salva"
                 else:
@@ -133,14 +143,18 @@ class wordleClass():
         self.running = False
         return returnText
 
+    def make_hall(self, contents):
+        return {entry["username"]:entry["wins"] for entry in contents}
+        
 
     def winners(self):
         if self.getUrl:
             # out of date and api mode enabled, so we must get the updated winners list from the api
-            g = get(self.getUrl, headers=self.apiHeaders)
+            g = get(self.getUrl, headers=self.apiHeaders, json={'platforms': [self.platform]})
             #DBGprint(f"g JSON  {g.json()}\n\tvalues: {g.json().values()}\n\thallofame values: {self.hallOfFame.values()}\n\tcode: {g.status_code}\n\ttext: {g.text}")
             if g.status_code == 200:
-                self.hallOfFame = dict(sorted(g.json().items(), key=lambda x:x[1], reverse=True))
+                
+                self.hallOfFame = self.make_hall((g.json()['rank']))
                 self.winnersOutOfDate = False
             else:
                 self.winnersOutOfDate = True
