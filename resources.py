@@ -211,7 +211,7 @@ class wordleClass():
             elif statuscode == 11:
                 self.response += self.close[ord(guess[i]) - 97] + " "
             else:
-                self.response += "_" + " "
+                self.response += " \- " + " "
 
         if sum(self.status) == 10 * self.wordsize:        # if missed every word
             self.response += "\nburro"
