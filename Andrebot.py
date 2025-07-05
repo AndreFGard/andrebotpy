@@ -79,12 +79,6 @@ class Andrebot:
             print("check apikey, headers, posturl, geturl and testUrl")
             sys.exit(1)
 
-        print(f"post url, geturl: {postUrl}, {getUrl}")
-        testRequest = get(testUrl, headers=apiHeaders)
-        print(testRequest.text + ":" + str(testRequest.status_code))
-        if testRequest.status_code != 200:
-            sys.exit(1)
-
         self.wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders, platform=platform)
 
         interface = interface(declarator)

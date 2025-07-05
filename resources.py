@@ -6,6 +6,176 @@ from json import load
 from functools import lru_cache
 
 
+
+import os
+import random
+from datetime import datetime
+from dotenv import load_dotenv
+import psycopg2
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
+
+# Optional: define lists for anon username generation
+ADJECTIVES = ["brave", "bright", "calm", "eager", "fancy", "gentle", "happy", "jolly", "kind", "lucky"]
+COLORS = ["red", "blue", "green", "yellow", "purple", "orange", "pink", "gold", "silver", "bronze"]
+ANIMALS = ["lion", "tiger", "bear", "eagle", "shark", "wolf", "fox", "owl", "panda", "koala"]
+
+class AndrebotModel:
+    def __init__(self):
+        load_dotenv()
+        self._connected = False
+        self._conn = None
+
+    def _connect(self):
+        if not self._connected:
+            try:
+                self._conn = psycopg2.connect(
+                    user=os.getenv("PGUSER"),
+                    password=os.getenv("PGPASSWORD"),
+                    host=os.getenv("PGHOST"),
+                    port=os.getenv("PGPORT"),
+                    database=os.getenv("PGDATABASE"),
+                    sslmode="require"
+                )
+                self._connected = True
+            except Exception as e:
+                print(f"Error connecting to database: {e}")
+                self._connected = False
+        return self._conn
+
+    def get_rank(self, limit=10):
+        """
+        Returns top users by wins (username, anon_username, wins, platform).
+        """
+        conn = self._connect()
+        if not conn:
+            return []
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(
+                "SELECT username, anon_username, wins, platform FROM users ORDER BY wins DESC LIMIT %s",
+                (limit,)
+            )
+            return cur.fetchall()
+
+    def auth_admin(self, name: str) -> str:
+        """
+        Returns the password for the given admin name.
+        """
+        conn = self._connect()
+        if not conn:
+            return None
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT password FROM admins WHERE name = %s",
+                (name,)
+            )
+            row = cur.fetchone()
+            return row[0] if row else None
+
+    def create_anon_username(self, username: str, platform: str) -> str:
+        """
+        Generates an anonymous username by combining random adjective, color, and animal.
+        """
+        parts = [random.choice(ADJECTIVES), random.choice(COLORS), random.choice(ANIMALS)]
+        return "_".join(parts) + f"_{platform}"
+
+    def add_user(self, username: str, platform: str, wins: int = 0):
+        """
+        Inserts a new user if they do not already exist.
+        """
+        conn = self._connect()
+        if not conn:
+            return
+        anon = self.create_anon_username(username, platform)
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO users (username, platform, anon_username, wins, registration)
+                SELECT %s, %s, %s, %s, NOW()
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM users WHERE username = %s AND platform = %s
+                )
+                """,
+                (username, platform, anon, wins, username, platform)
+            )
+        conn.commit()
+
+    def increment_wins(self, username: str, platform: str, amount: int = 1):
+        """
+        Increments wins for a user by the given amount.
+        """
+        conn = self._connect()
+        if not conn:
+            return
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE users SET wins = wins + %s WHERE username = %s AND platform = %s",
+                (amount, username, platform)
+            )
+        conn.commit()
+
+    def __do_add_winner_query(
+        self,
+        winner: str,
+        loser: str,
+        word: str,
+        platform: str,
+        attempts: int,
+        event_date: datetime = None
+    ):
+        conn = self._connect()
+        if not conn:
+            return
+        date_expr = event_date if event_date else datetime.utcnow()
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO victories (user_id, loser_id, word, platform, attempts, event_date)
+                VALUES (
+                    (SELECT id FROM users WHERE username = %s AND platform = %s),
+                    (SELECT id FROM users WHERE username = %s AND platform = %s),
+                    %s, %s, %s, %s
+                )
+                """,
+                (winner, platform, loser, platform, word, platform, attempts, date_expr)
+            )
+        conn.commit()
+
+    def add_winner(
+        self,
+        winner: str,
+        loser: str,
+        word: str,
+        platform: str,
+        attempts: int,
+        event_date: datetime = None
+    ):
+        """
+        Records a victory event, auto-registering users if necessary.
+        """
+        try:
+            self.__do_add_winner_query(winner, loser, word, platform, attempts, event_date)
+        except psycopg2.IntegrityError as e:
+            # Likely due to missing users, so try to register them
+            print(f"IntegrityError: {e}, attempting to register users...")
+            try:
+                self.add_user(winner, platform)
+                self.add_user(loser, platform)
+                self.__do_add_winner_query(winner, loser, word, platform, attempts, event_date)
+            except Exception as retry_err:
+                print(f"Failed to add victory after registering users: {retry_err}")
+                return
+        except Exception as other:
+            print(f"Unexpected error adding victory: {other}")
+            return
+        # Finally increment winner's wins
+        try:
+            self.increment_wins(winner, platform, 1)
+        except Exception as e:
+            print(f"Failed to increment wins for {winner}: {e}")
+
+
+
 global male_names
 global female_names
 try:

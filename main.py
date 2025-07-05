@@ -12,6 +12,9 @@ import datetime
 from resources import words5, wordleClass
 from requests import get
 
+
+
+
 description = """An example bot to showcase the discord.ext.commands extension
 module.
 There are a number of utility commands being showcased here."""
@@ -34,6 +37,9 @@ async def on_ready():
 andrebot = Andrebot.Andrebot(bot.command, platform='dsc')
 asyncio.run(andrebot.create_functions())
 
+# @bot.command()
+# async def mine(ctx):
+#     await ctx.send(f"{server.status().players.online} players playing")
 
 try:
     BOT_TOKEN = environ["BOT_TOKEN"]
