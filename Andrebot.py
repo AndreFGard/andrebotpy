@@ -34,13 +34,14 @@ class Discord_Interface:
 
     def interface_middleware_decorator(self, extra_commands=[]):
         def decor(f):
-            print("im running")
             @self.decorator(name=f.__name__)
             async def f2(ctx, *args):
                 if not args: args = []
-
+                try:
                 #args = type_cast_args(args)
-                return await f(ctx, *args)
+                    return await f(ctx, *args)
+                except Exception as e:
+                    await ctx.send(f"Um erro selvagem aconteceu: {e.__str__()}")
         return decor
 
 
