@@ -1,6 +1,5 @@
 from random import choice
 from unidecode import unidecode
-from requests import get, post
 from time import time
 from json import load
 from functools import lru_cache
@@ -57,7 +56,7 @@ class AndrebotModel:
             )
             return cur.fetchall()
 
-    def auth_admin(self, name: str) -> str:
+    def auth_admin(self, name: str) -> str|None:
         """
         Returns the password for the given admin name.
         """
@@ -121,7 +120,7 @@ class AndrebotModel:
         word: str,
         platform: str,
         attempts: int,
-        event_date: datetime = None
+        event_date: datetime|None = None
     ):
         conn = self._connect()
         if not conn:
@@ -148,7 +147,7 @@ class AndrebotModel:
         word: str,
         platform: str,
         attempts: int,
-        event_date: datetime = None
+        event_date: datetime|None = None
     ):
         """
         Records a victory event, auto-registering users if necessary.
@@ -211,7 +210,7 @@ class Distinction:
         name = name.upper()
         
         gender = self.find_group(name)
-        return gender['classification'] if gender else "?"
+        return gender['classification'] if gender else "?" #type: ignore
 
 d = Distinction()
 d.find_gender("luisa")
@@ -227,33 +226,27 @@ class gameState:
         
     
 class wordleClass():
-    def __init__(self, wordSize: int, wordList: tuple, postUrl=None, getUrl=None, apiHeaders=None, testUrl=None, platform='dsc'):
+    def __init__(self, wordSize: int, wordList: tuple, postUrl=None, getUrl=None, apiHeaders=None, testUrl=None, platform='dsc', model=None):
         """Return wordleClass instance for given wordsize and wordList"""
         self.wordsize = wordSize
         self.word = "linúx"             # linux
         self.wordList = wordList
         self.wordNoAccent = "linux"
-
         self.platform = platform
-
         self.testUrl = testUrl
         self.postUrl = postUrl
         self.getUrl = getUrl
         self.apiHeaders = apiHeaders
         self.winnersOutOfDate = True
         self.running = False
-
-        # status of each letter of the guess. 10 = not in the word, 11 = in the word, but wrong position, 12 = in word, correct position
         self.status = [0] * wordSize 
         self.response = ""              # response string
-        
         self.allowedGuesses = wordSize + 1
         self.guessesCount = 0       
-
         self.hallOfFame = {}
-
         self.close = ("🄰","🄱","🄲","🄳","🄴","🄵","🄶","🄷","🄸","🄹","🄺","🄻","🄼","🄽","🄾","🄿","🅀","🅁","🅂","🅃","🅄","🅅","🅆","🅇","🅈","🅉",)
         self.correct = ("🇦","🇧","🇨","🇩","🇪","🇫","🇬","🇭","🇮","🇯","🇰","🇱","🇲","🇳","🇴","🇵","🇶","🇷","🇸","🇹","🇺","🇻","🇼","🇽","🇾","🇿",)
+        self.model = model
 
 
     def update(self, override = False):
@@ -267,47 +260,34 @@ class wordleClass():
         self.wordNoAccent = unidecode(self.word)
         print("word", self.word)
         self.running = True             
-        ping = get(self.testUrl, headers=self.apiHeaders)
-        ping = get(self.testUrl, headers=self.apiHeaders)
         return "!wt _tentativa_, se for capaz!"
         from resources import words5, wordleClass
         wordle5 = wordleClass(5, words5)
 
 
     def win(self, username):
-        """Sweet victory"""
+        """Sweet victory, now using DB"""
         self.WAKETHEAPI()
         returnText = ""
-        if not self.postUrl:
-            if username not in self.hallOfFame:
-                self.hallOfFame[username] = 0
-            self.hallOfFame[username] += 1
-            print(self.hallOfFame.items())
+        # Save to DB if model is available
+        if self.model:
+            try:
+                self.model.add_winner(
+                    winner=username,
+                    loser="Andrebot",
+                    word=self.wordNoAccent,
+                    platform=self.platform,
+                    attempts=self.guessesCount
+                )
+                returnText = "\nVitória salva no banco de dados!"
+            except Exception as e:
+                returnText = f"\nErro ao salvar vitória no banco: {e}"
         else:
-            # username, word, attempts, timestamp)
-            p = post(self.postUrl, json = {
-                'winners':[
-                    {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount,
-                      'loser_username': 'Andrebot', 'platform': self.platform}]}, 
-                      headers=self.apiHeaders)
-
-
-            if int(p.status_code) != 200:
-                p = post(self.postUrl, json = {
-                    'winners':[
-                        {"username": username, "word": self.wordNoAccent, "attempts": self.guessesCount,
-                        'loser_username': 'Andrebot', 'platform': self.platform}]}, 
-                        headers=self.apiHeaders)
-                if int(p.status_code) != 200:
-                    returnText = "\nErro, vitoria nao salva"
-                else:
-                    returnText = "\nVitória salva de segunda!"
-            else:
-                returnText = "\nVitória salva de primeira!"
-        
-        if username not in self.hallOfFame:
-            self.hallOfFame[username] = 0
+            # fallback to local hall of fame
+            if username not in self.hallOfFame:
+                self.hallOfFame[username] = 0 #type: ignore
             self.hallOfFame[username] += 1
+            returnText = "\nVitória salva localmente!"
         self.winnersOutOfDate = True
         self.guessesCount = 0
         self.running = False
@@ -320,7 +300,6 @@ class wordleClass():
     def winners(self):
         if self.getUrl:
             # out of date and api mode enabled, so we must get the updated winners list from the api
-            g = get(self.getUrl, headers=self.apiHeaders, json={'platforms': [self.platform]})
             #DBGprint(f"g JSON  {g.json()}\n\tvalues: {g.json().values()}\n\thallofame values: {self.hallOfFame.values()}\n\tcode: {g.status_code}\n\ttext: {g.text}")
             if g.status_code == 200:
                 
@@ -395,12 +374,7 @@ class wordleClass():
         return self.response
     
     def WAKETHEAPI(self):
-        g = get(self.testUrl, headers=self.apiHeaders)
-        if int(g.status_code) != 200:
-            print(f"woke the api: {time()}")
-            g = get(self.testUrl, headers=self.apiHeaders)
-            if int(g.status_code) != 200:
-                print("FAILED TO WAKE THE API")
+        ...
 
 
 # credits to https://github.io/Eliezir/Wordle-Eliezir

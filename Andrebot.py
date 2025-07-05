@@ -10,7 +10,7 @@ import json
 import datetime
 import discord.ext
 import discord.ext.commands
-from resources import words5, wordleClass, Distinction,isocode_to_gentile
+from resources import words5, wordleClass, Distinction, isocode_to_gentile, AndrebotModel
 from resources import detect as lang_detection
 from requests import get
 import discord
@@ -49,41 +49,31 @@ def type_cast_args(args:list[str]) -> None:
     return [(int(el) if el.isdecimal() else el)  for el in args]
 
 class Andrebot:
-    def __init__(self, declarator, interface: Discord_Interface=Discord_Interface, filesPath="./", platform='dsc'):
+    def __init__(self, declarator, interface_cls: type = Discord_Interface, filesPath="./", platform='dsc'):
         self.distinction = Distinction()
-
-        # BASE_URL= "https://xinga-me.appspot.com/api"
         self.emojiappended = ('😀', ' ', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺', '️', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨',
                         '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁',
                         '☹', '😣', '😖', '😫', '😩', '��', '😢', '😭', '😤', '😠', '��', '🤬', '🤯', '😳', '🥵', '��', '😱', '😨', '😰', '😥', '��', '🤗', 
                         '🤔', '🤭', '🤫', '��', '😶', '😐', '😑', '😬', '��', '😯', '😦', '😧', '😮', '��', '🥱', '😴', '🤤', '😪', '��', '🤐', '🥴', '🤢', '🤮', 
                         '��', '😷', '🤒', '🤕', '🤑', '��', '😈', '👿', '👹', '👺', '��', '💩', '👻', '💀', '☠', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', 
                         '😽', '🙀', '😿', '😾')
-        
         self.filesPath = filesPath
         self.funny_cities = open(self.filesPath+"funny_cities.txt").readlines()
         from toxingar import curses
         self.curses = curses
-        # curses is a tuple containing small offenses
         self.gabaritoh = open(self.filesPath+"2022_D1.txt").readlines()
         self.gabaritoe = open(self.filesPath+"2022_D2.txt").readlines()
 
-        try:
-            apiKey = environ["apiKey"] 
-            apiHeaders = {'password': apiKey, 'platform': platform}
-            postUrl = environ["postUrl"]
-            getUrl = environ["getUrl"]
-            global testUrl
-            testUrl = environ["testUrl"]
-        except KeyError:
-            print("check apikey, headers, posturl, geturl and testUrl")
-            sys.exit(1)
+        # Integrate AndrebotModel for local DB
+        self.model = AndrebotModel()
 
-        self.wordle5 = wordleClass(5, words5, postUrl=postUrl, getUrl=getUrl, testUrl=testUrl, apiHeaders=apiHeaders, platform=platform)
+        # Use wordleClass without remote API (local only)
+        # Pass the model to wordleClass for DB integration
+        self.wordle5 = wordleClass(5, words5, platform=platform, model=self.model)
 
-        interface = interface(declarator)
+        interface_instance = interface_cls(declarator)
         self.declarator = declarator
-        self.dec = interface.interface_middleware_decorator
+        self.dec = interface_instance.interface_middleware_decorator
 
     async def create_functions(self):
         @self.dec()
@@ -125,7 +115,9 @@ class Andrebot:
         async def linux(context):
             """Usa Linux boyy (?)"""
             await context.send("Usa Linux boyy")
-            return await context.send(file=self.interface.File("Tux.svg.png"))
+            # File sending not implemented in this interface, so just send the message
+            # If you want to send a file, implement file sending in the interface
+            # return await context.send(file=self.interface.File("Tux.svg.png"))
 
 
         @self.dec()
@@ -140,18 +132,11 @@ class Andrebot:
         @self.dec()
         async def repete(context, *args: list[str], content="Repetindo"):
             """ " !repete palavras a serem repetidas uma vez"""
-
             times = 1
-
-            #im not sure about what this does
-            #maybeTimes = "".join(args[0]) if args[0]
-            maybeTimes = args[0]
-            if (maybeTimes.isnumeric()):
-                times = int(maybeTimes)
+            if args and isinstance(args[0], str) and args[0].isnumeric():
+                times = int(args[0])
                 args = args[1:]
-
-            arguments = " ".join(map(lambda l: "".join(l), args))  # .join joins tudo de uma lista, tuple ou dict
-
+            arguments = " ".join(map(str, args))
             if times <= 8:
                 return await context.send((f"{arguments}\n" * times))
             else:
@@ -204,22 +189,19 @@ class Andrebot:
         @self.dec()
         async def sergio(context, description="Quantos dias faltam para SERGIO SALES"):
             """Quantos dias faltam para SERGIO SALES"""
-            today = str(datetime.datetime.today().strftime("%j"))
-            if today == "217":
+            today = int(datetime.datetime.today().strftime("%j"))
+            if today == 217 or today == 218:
                 sergio = "HOJE É O ANIVERSÁRIO DO SÉRGIO MITO (ou o dia seguinte)"
-            elif today == "218":
-                sergio = "HOJE É O ANIVERSÁRIO DO SÉRGIO MITO (ou o dia seguinte)"
-                print(sergio)
+                await context.send(sergio)
+                return
             else:
                 sergio = "Hoje não é o aniverśario de serginho. "
-                if int(today) > 217:
-                    daysuntil = 365 - int(today) + 217
+                if today > 217:
+                    daysuntil = 365 - today + 217
                 else:
-                    daysuntil = 217 - int(today)
-                print(sergio)
-                print(daysuntil)
-            await context.send(sergio)
-            return await context.send(f"ainda faltam {daysuntil} dias")
+                    daysuntil = 217 - today
+                await context.send(sergio)
+                return await context.send(f"ainda faltam {daysuntil} dias")
 
 
         @self.dec()
@@ -305,8 +287,17 @@ class Andrebot:
                 
         @self.dec()
         async def wordlewinners(context):
-            print("message: " + context.author.name)
-            return await context.send(self.wordle5.winners())
+            """Mostra o ranking dos maiores vencedores do wordle"""
+            winners = self.model.get_rank(10)
+            if not winners:
+                return await context.send("Nenhum vencedor encontrado ou erro de conexão com o banco de dados.")
+            msg = "🏆 **Wordle Winners** 🏆\n"
+            for i, user in enumerate(winners, 1):
+                username = user.get('username') or user.get('anon_username') or 'anon'
+                wins = user.get('wins', 0)
+                platform = user.get('platform', '')
+                msg += f"{i}. {username} ({platform}) — {wins} vitórias\n"
+            await context.send(msg)
         
         @self.dec()
         async def lang(ctx, *args):

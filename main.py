@@ -45,5 +45,6 @@ try:
     BOT_TOKEN = environ["BOT_TOKEN"]
 except KeyError:
     print("No BOT_TOKEN env var provided")
+    sys.exit()
 
 bot.run(BOT_TOKEN)
