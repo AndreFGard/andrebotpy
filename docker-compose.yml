@@ -1,0 +1,6 @@
+version: '3.8'
+
+services:
+  discbot:
+    env_file: ".env"
+    build: .

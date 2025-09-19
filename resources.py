@@ -9,7 +9,6 @@ from functools import lru_cache
 import os
 import random
 from datetime import datetime
-from dotenv import load_dotenv
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
@@ -21,7 +20,6 @@ ANIMALS = ["lion", "tiger", "bear", "eagle", "shark", "wolf", "fox", "owl", "pan
 
 class AndrebotModel:
     def __init__(self):
-        load_dotenv()
         self._connected = False
         self._conn = None
 
@@ -360,7 +358,7 @@ class wordleClass():
             elif statuscode == 11:
                 self.response += self.close[ord(guess[i]) - 97] + " "
             else:
-                self.response += " \- " + " "
+                self.response += " - " + " "
 
         if sum(self.status) == 10 * self.wordsize:        # if missed every word
             self.response += "\nburro"
